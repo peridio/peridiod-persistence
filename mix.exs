@@ -22,7 +22,7 @@ defmodule PeridiodPersistence.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:uboot_env, "~> 1.0"},
+      {:uboot_env, "~> 1.0"}
     ]
   end
 end

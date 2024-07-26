@@ -14,7 +14,8 @@ defmodule PeridiodPersistence.KVTest do
 
   setup context do
     options =
-      context[:kv_options] || [kv_backend: {PeridiodPersistence.KVBackend.InMemory, contents: @kv}]
+      context[:kv_options] ||
+        [kv_backend: {PeridiodPersistence.KVBackend.InMemory, contents: @kv}]
 
     {:ok, kv_pid} = KV.start_link(options, [])
     KV.get_all(kv_pid)
@@ -52,7 +53,12 @@ defmodule PeridiodPersistence.KVTest do
   end
 
   test "put/1", context do
-    assert :ok = KV.put_map(context.kv_pid, %{"test_key1" => "test_value1", "test_key2" => "test_value2"})
+    assert :ok =
+             KV.put_map(context.kv_pid, %{
+               "test_key1" => "test_value1",
+               "test_key2" => "test_value2"
+             })
+
     assert KV.get(context.kv_pid, "test_key1") == "test_value1"
     assert KV.get(context.kv_pid, "test_key2") == "test_value2"
   end
@@ -73,7 +79,9 @@ defmodule PeridiodPersistence.KVTest do
     assert KV.get_active(context.kv_pid, "active_test_key2") == "active_test_value2"
   end
 
-  @tag kv_options: [kv_backend: {PeridiodPersistence.KVBackend.InMemory, contents: %{"key" => "value"}}]
+  @tag kv_options: [
+         kv_backend: {PeridiodPersistence.KVBackend.InMemory, contents: %{"key" => "value"}}
+       ]
   test "old modules configuration", context do
     assert KV.get(context.kv_pid, "key") == "value"
 
@@ -81,7 +89,9 @@ defmodule PeridiodPersistence.KVTest do
     assert KV.get(context.kv_pid, "test_key") == "test_value"
   end
 
-  @tag kv_options: [kv_backend: {PeridiodPersistence.KVBackend.InMemory, contents: %{"key" => "value"}}]
+  @tag kv_options: [
+         kv_backend: {PeridiodPersistence.KVBackend.InMemory, contents: %{"key" => "value"}}
+       ]
   test "old configuration", context do
     assert KV.get(context.kv_pid, "key") == "value"
 

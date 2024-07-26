@@ -1,3 +1,3 @@
 defmodule PeridiodPersistence do
-@moduledoc false
+  @moduledoc false
 end

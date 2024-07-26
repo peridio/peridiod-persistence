@@ -10,6 +10,7 @@ defmodule PeridiodPersistence.Application do
   @impl true
   def start(_type, _args) do
     application_config = Application.get_all_env(:peridiod_persistence)
+
     children = [
       {KV, application_config}
     ]
