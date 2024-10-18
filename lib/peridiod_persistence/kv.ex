@@ -160,6 +160,13 @@ defmodule PeridiodPersistence.KV do
   end
 
   @doc """
+  Reload the contents from the source backend
+  """
+  def reinitialize(pid_or_name \\ __MODULE__) do
+    GenServer.call(pid_or_name, :reinitialize)
+  end
+
+  @doc """
   Get the key for only the active firmware slot
   """
   @spec get_active(String.t()) :: String.t() | nil
@@ -246,6 +253,11 @@ defmodule PeridiodPersistence.KV do
   end
 
   @impl GenServer
+  def handle_call(:reinitialize, _from, s) do
+    s = initialize(s.backend, s.options)
+    {:reply, s.contents, s}
+  end
+
   def handle_call({:get_active, key}, _from, s) do
     {:reply, active(key, s), s}
   end
