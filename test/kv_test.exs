@@ -100,8 +100,8 @@ defmodule PeridiodPersistence.KVTest do
   end
 
   @tag kv_options: [
-    kv_backend: {PeridiodPersistence.KVBackend.InMemory, contents: %{"key" => "value"}}
-  ]
+         kv_backend: {PeridiodPersistence.KVBackend.InMemory, contents: %{"key" => "value"}}
+       ]
   test "reinitialize", context do
     assert KV.get(context.kv_pid, "key") == "value"
     assert :ok = KV.put(context.kv_pid, "test_key", "test_value")

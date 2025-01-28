@@ -254,7 +254,7 @@ defmodule PeridiodPersistence.KV do
 
   @impl GenServer
   def handle_call(:reinitialize, _from, s) do
-    s = initialize(s.backend, s.options)
+    s = reinitialize(s.backend, s)
     {:reply, s.contents, s}
   end
 
@@ -361,4 +361,7 @@ defmodule PeridiodPersistence.KV do
         %{backend: PeridiodPersistence.KVBackend.InMemory, options: [], contents: %{}}
     end
   end
+
+  defp reinitialize(PeridiodPersistence.KVBackend.InMemory, s), do: s
+  defp reinitialize(backend, s), do: initialize(backend, s.options)
 end
