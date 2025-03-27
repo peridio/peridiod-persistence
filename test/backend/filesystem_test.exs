@@ -24,8 +24,18 @@ defmodule PeridiodPersistence.KVFilesystemTest do
     assert KV.get_all(context.kv_pid) == %{}
   end
 
+  test "get_and_update", context do
+    assert :ok = KV.put(context.kv_pid, "foo", "bar")
+    assert :ok = KV.put(context.kv_pid, "bar", "baz")
+    # assert :ok = KV.get_and_update(context.kv_pid, "foo", fn _ -> :pop end)
+    # assert %{"bar" => "baz"} = KV.get_all(context.kv_pid)
+    assert :ok = KV.get_and_update(context.kv_pid, "bar", fn _ -> "baz" end)
+    assert %{"foo" => "bar", "bar" => "baz"} = KV.get_all(context.kv_pid)
+  end
+
   test "save", context do
     assert :ok = KV.put(context.kv_pid, "foo", "bar")
+    assert %{"foo" => "bar"} = KV.get_all(context.kv_pid)
   end
 
   test "read back", context do

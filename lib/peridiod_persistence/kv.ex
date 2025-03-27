@@ -272,13 +272,13 @@ defmodule PeridiodPersistence.KV do
     {reply, s} =
       case fun.(current) do
         :pop ->
-          {:ok, Map.delete(current, key)}
+          do_put(Map.delete(s.contents, key), s)
 
         value ->
-          do_put(%{key => value}, s)
+          do_put(Map.merge(s.contents, %{key => value}), s)
       end
 
-    {:reply, {reply, s}, s}
+    {:reply, reply, s}
   end
 
   def handle_call(:get_all_active, _from, s) do
@@ -294,7 +294,7 @@ defmodule PeridiodPersistence.KV do
   def handle_call({:get_all_and_update, fun}, _from, s) do
     kv = fun.(s.contents)
     {reply, s} = do_put(kv, s)
-    {:reply, {reply, s}, s}
+    {:reply, reply, s}
   end
 
   def handle_call({:put, kv}, _from, s) do
